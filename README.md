@@ -278,21 +278,21 @@ bun run style:check   # Check style compliance
 ### Testing
 
 ```bash
-# Test the setup
-node scripts/test.mjs
+# Run tests
+bun test
 
 # Test with mock data
-MOCK_DATA=true node scripts/pull-requests.mjs ./test-output
+MOCK_DATA=true bun scripts/pull-requests.mjs ./test-output
 ```
 
 ### Local Development
 
 ```bash
 # Run with debug logging
-DEBUG=true node scripts/pull-requests.mjs ./debug-output
+DEBUG=true bun scripts/pull-requests.mjs ./debug-output
 
 # Test with specific repository
-GITHUB_REPOSITORY=usefrontal/frontal node scripts/pull-requests.mjs ./output
+GITHUB_REPOSITORY=usefrontal/frontal bun scripts/pull-requests.mjs ./output
 ```
 
 ## Troubleshooting
@@ -351,9 +351,9 @@ logger.debug('Author data:', authorData);
 
 ## Reference
 
-- [Code of Conduct](../../docs/CODE_OF_CONDUCT.md)
-- [Contributing Guidelines](../../docs/CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
 - [GitHub Pull Requests API](https://docs.github.com/en/rest/pulls)
 - [GitHub Reviews API](https://docs.github.com/en/rest/pulls/reviews)
-- [License](../../LICENSE)
+- [License](LICENSE.md)
 
