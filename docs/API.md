@@ -22,7 +22,7 @@ The top-pull-requests tool analyzes GitHub pull requests, tracks review metrics,
 The script accepts one optional command-line argument:
 
 ```bash
-node scripts/pull-requests.mjs [output-directory]
+bun scripts/pull-requests.mjs [output-directory]
 ```
 
 - `output-directory`: Path where the `slack-payload.json` file will be written (default: `./output`)

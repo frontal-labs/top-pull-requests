@@ -74,7 +74,7 @@ on:
 Generate reports for team triage sessions:
 
 ```bash
-node scripts/pull-requests.mjs ./output
+bun scripts/pull-requests.mjs ./output
 ```
 
 ### 3. Reviewer Reminders
