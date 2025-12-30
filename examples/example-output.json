@@ -1,0 +1,10 @@
+{
+	"prelude": "🔍 Top Pull Requests Report (1/15/2024)\nThis report shows the most important pull requests that need attention.",
+	"prSummary": "📊 Pull Request Summary\n• Total Open PRs: 15\n• Average Wait Time: 2.5 days\n• Average Review Time: 1.2 days\n• Top Labels: bug (5), feature (3), documentation (2)",
+	"waitingForReview": "⏳ Waiting for Review (3 PRs)\n• PR #234 (feature/auth-refactor) waiting 5 days\n  📝 Refactor authentication system\n  👤 Author: @alice\n  🎯 Assigned: @bob\n  👀 Reviewers: @charlie, @dave",
+	"largeChanges": "📦 Large Changes (2 PRs)\n• PR #245 (api-overhaul) - 1200 lines changed\n  📝 Complete API redesign\n  👤 Author: @eve\n  🎯 Assigned: @frank\n  📊 +800 -400 (45 files)",
+	"hotReviews": "🔥 Hot Reviews (1 PRs)\n• PR #251 (database-migration) - 12 comments\n  📝 Database schema migration\n  👤 Author: @grace\n  🎯 Assigned: @henry\n  💬 12 comments, 8 review comments",
+	"reviewerInsights": "👀 Reviewer Insights\n• @bob: 8 reviews (75% approval rate)\n  ✅ 6 approved, ❌ 2 changes requested\n• @charlie: 5 reviews (100% approval rate)\n  ✅ 5 approved, ❌ 0 changes requested",
+	"authorInsights": "👤 Author Insights\n• @alice: 3 open PRs\n  📊 450 lines changed (+300 -150)\n• @eve: 2 open PRs\n  📊 1200 lines changed (+800 -400)",
+	"recommendations": "💡 Recommendations\n• Review PRs waiting more than 3 days (3 PRs)\n• Assign reviewers to unassigned PRs (2 PRs)\n• Break down large PRs into smaller, focused changes (2 PRs)"
+}

@@ -1,0 +1,61 @@
+name: Top Pull Requests Report
+
+on:
+  schedule:
+    # Run every weekday at 9AM UTC
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      reactions: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Generate PR report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPOSITORY: ${{ github.repository }}
+        run: bun tools/top-pull-requests/scripts/pull-requests.mjs ./output
+        
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: top-prs-report
+          path: ./output/slack-payload.json
+          retention-days: 7
+          
+      - name: Post to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          payload_file_path: ./output/slack-payload.json
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+
