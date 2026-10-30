@@ -1,0 +1,17 @@
+export const NUM_OF_DAYS = 7;
+export const MAX_PRS = 20;
+export const WAITING_THRESHOLD_DAYS = 3;
+export const LARGE_CHANGE_THRESHOLD = 500;
+export const HOT_REVIEW_THRESHOLD = 5;
+export const MILLISECONDS_PER_SECOND = 1000;
+export const SECONDS_PER_MINUTE = 60;
+export const MINUTES_PER_HOUR = 60;
+export const HOURS_PER_DAY = 24;
+export const MILLISECONDS_PER_DAY =
+	MILLISECONDS_PER_SECOND *
+	SECONDS_PER_MINUTE *
+	MINUTES_PER_HOUR *
+	HOURS_PER_DAY;
+export const TOP_LABELS_COUNT = 3;
+export const TOP_REVIEWERS_COUNT = 5;
+export const TOP_AUTHORS_COUNT = 5;

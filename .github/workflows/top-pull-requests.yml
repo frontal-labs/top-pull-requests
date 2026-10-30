@@ -1,0 +1,36 @@
+name: Top Pull Requests
+
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
+        with:
+          bun-version: 1.3.14
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate PR report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bun scripts/pull-requests.ts ./output
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: top-pull-requests-report
+          path: ./output/slack-payload.json
