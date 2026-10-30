@@ -22,14 +22,14 @@ The top-pull-requests tool analyzes GitHub pull requests, tracks review metrics,
 The script accepts one optional command-line argument:
 
 ```bash
-bun scripts/pull-requests.mjs [output-directory]
+bun scripts/pull-requests.ts [output-directory]
 ```
 
 - `output-directory`: Path where the `slack-payload.json` file will be written (default: `./output`)
 
 ### Configuration Constants
 
-Edit `scripts/pull-requests.mjs` to customize:
+Edit `scripts/pull-requests.ts` to customize:
 
 ```javascript
 const NUM_OF_DAYS = 7;                    // Time range for analysis (default: 7)
@@ -405,3 +405,9 @@ See the `examples/` directory for:
 - GitHub Actions workflows
 - Usage scripts
 
+
+<environment_details>
+Current time: 2026-10-30T16:21:25+00:00
+Working directory: /Users/gabrielfonseca/Desktop/top-pull-requests
+Workspace root folder: /Users/gabrielfonseca/Desktop/top-pull-requests
+</environment_details>

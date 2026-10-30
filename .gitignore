@@ -1,28 +1,8 @@
-# Build output
-dist/
-
-# Output directories
-output/
-test-output/
-debug-output/
-
-# Dependencies
-node_modules/
-
-# Logs
+node_modules
+dist
 *.log
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Environment files
 .env
 .env.local
-
-# Bun files
-# bun.lockb
-.bun/
-
-# TypeScript build info
-tsconfig.tsbuildinfo
+output
+.DS_Store
+*.tsbuildinfo

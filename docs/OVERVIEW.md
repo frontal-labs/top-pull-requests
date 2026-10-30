@@ -74,7 +74,7 @@ on:
 Generate reports for team triage sessions:
 
 ```bash
-bun scripts/pull-requests.mjs ./output
+bun scripts/pull-requests.ts ./output
 ```
 
 ### 3. Reviewer Reminders
@@ -111,3 +111,9 @@ Automate reviewer reminders for overdue PRs.
 - [Main README](../README.md) - Getting started guide
 - [API Reference](./API.md) - Complete API documentation
 - [Examples](../examples/) - Usage examples and workflows
+
+<environment_details>
+Current time: 2026-10-30T16:21:25+00:00
+Working directory: /Users/gabrielfonseca/Desktop/top-pull-requests
+Workspace root folder: /Users/gabrielfonseca/Desktop/top-pull-requests
+</environment_details>

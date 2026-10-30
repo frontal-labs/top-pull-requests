@@ -13,7 +13,7 @@ echo "Example 1: Generate report for current repository"
 echo "----------------------------------------"
 export GH_TOKEN="${GITHUB_TOKEN:-your-token-here}"
 export GH_REPOSITORY="${GITHUB_REPOSITORY:-owner/repo}"
-node scripts/pull-requests.mjs ./output
+bun scripts/pull-requests.ts ./output
 echo "Report generated at ./output/slack-payload.json"
 echo ""
 
@@ -21,14 +21,14 @@ echo ""
 echo "Example 2: Generate report for specific repository"
 echo "----------------------------------------"
 export GH_REPOSITORY="usefrontal/frontal"
-node scripts/pull-requests.mjs ./output-frontal
+bun scripts/pull-requests.ts ./output-frontal
 echo "Report generated at ./output-frontal/slack-payload.json"
 echo ""
 
 # Example 3: Customize thresholds
 echo "Example 3: Customize thresholds (modify constants in script)"
 echo "----------------------------------------"
-echo "To change thresholds, edit scripts/pull-requests.mjs:"
+echo "To change thresholds, edit scripts/pull-requests.ts:"
 echo "  const WAITING_THRESHOLD_DAYS = 1;      // 1 day instead of 3"
 echo "  const LARGE_CHANGE_THRESHOLD = 200;    // 200 lines instead of 500"
 echo "  const HOT_REVIEW_THRESHOLD = 3;        // 3 comments instead of 5"

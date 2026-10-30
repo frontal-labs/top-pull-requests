@@ -57,7 +57,7 @@ export GH_REPOSITORY="owner/repo"
 
 ```bash
 # Generate the report
-node scripts/pull-requests.mjs ./output
+bun scripts/pull-requests.ts ./output
 
 # Send to Slack
 curl -X POST -H 'Content-type: application/json' \
@@ -75,7 +75,7 @@ See `github-actions-workflow.yml` for a complete example. The workflow:
 
 ### Custom Thresholds
 
-Edit `scripts/pull-requests.mjs` to customize thresholds:
+Edit `scripts/pull-requests.ts` to customize thresholds:
 
 ```javascript
 const WAITING_THRESHOLD_DAYS = 1;      // 1 day instead of 3
@@ -153,7 +153,7 @@ Use the example output to verify your setup:
 ```bash
 # Generate a test report
 GH_TOKEN="your-token" GH_REPOSITORY="test/repo" \
-  node scripts/pull-requests.mjs ./test-output
+  bun scripts/pull-requests.ts ./test-output
 
 # Compare with example
 cat ./test-output/slack-payload.json | jq .
@@ -195,3 +195,9 @@ If the output format is incorrect:
 - [API Documentation](../docs/API.md) - Detailed API reference
 - [Tests](../tests/) - Test files and examples
 
+
+<environment_details>
+Current time: 2026-10-30T16:21:25+00:00
+Working directory: /Users/gabrielfonseca/Desktop/top-pull-requests
+Workspace root folder: /Users/gabrielfonseca/Desktop/top-pull-requests
+</environment_details>

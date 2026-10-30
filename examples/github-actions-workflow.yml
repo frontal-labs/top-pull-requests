@@ -42,7 +42,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPOSITORY: ${{ github.repository }}
-        run: bun tools/top-pull-requests/scripts/pull-requests.mjs ./output
+        run: bun tools/top-pull-requests/scripts/pull-requests.ts ./output
         
       - name: Upload report artifact
         uses: actions/upload-artifact@v4

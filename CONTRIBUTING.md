@@ -133,3 +133,9 @@ Feature requests should explain:
 
 Thanks for helping make Frontal better
 If you have questions, open an issue or start a discussion.
+
+<environment_details>
+Current time: 2026-10-30T16:21:25+00:00
+Working directory: /Users/gabrielfonseca/Desktop/top-pull-requests
+Workspace root folder: /Users/gabrielfonseca/Desktop/top-pull-requests
+</environment_details>

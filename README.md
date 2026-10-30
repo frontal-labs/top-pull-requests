@@ -1,4 +1,6 @@
-# @frontal/top-pull-requests
+# Frontal Top Pull Requests
+
+![Frontal Banner](./banner.jpg)
 
 An internal package that surfaces the most important pull requests by analyzing waiting times, change sizes, review activity, and reviewer assignments to provide actionable insights for improving PR velocity and code review processes.
 
@@ -30,9 +32,6 @@ This package is part of the Frontal monorepo and uses bun for dependency managem
 ```bash
 # Install dependencies
 bun install
-
-# Build the package
-bun run build
 ```
 
 ## Usage
@@ -41,10 +40,10 @@ bun run build
 
 ```bash
 # Basic usage
-bun scripts/pull-requests.mjs <output-directory>
+bun scripts/pull-requests.ts <output-directory>
 
 # Example
-bun scripts/pull-requests.mjs ./output
+bun scripts/pull-requests.ts ./output
 ```
 
 ### GitHub Actions Integration
@@ -74,7 +73,7 @@ jobs:
       - name: Generate PR report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bun tools/top-pull-requests/scripts/pull-requests.mjs ./output
+        run: bun tools/top-pull-requests/scripts/pull-requests.ts ./output
         
       - name: Post to Slack
         uses: 8398a7/action-slack@v3
@@ -92,11 +91,11 @@ jobs:
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `GH_TOKEN` | Yes | GitHub personal access token or Actions token |
-| `GH_REPOSITORY` | No | Repository in format `owner/repo` (defaults to current repo) |
+| `GH_REPOSITORY` | Yes | Repository in format `owner/repo` (`GITHUB_REPOSITORY` is also accepted) |
 
 ### Parameters
 
-The following constants can be modified in `scripts/pull-requests.mjs`:
+The following constants can be modified in `scripts/pull-requests.ts`:
 
 ```javascript
 const NUM_OF_DAYS = 7;                    // Time range for analysis
@@ -212,7 +211,7 @@ Based on file changes and review history, the tool can suggest:
 To analyze multiple repositories, modify the script:
 
 ```javascript
-// In scripts/pull-requests.mjs
+// In scripts/pull-requests.ts
 const REPOSITORIES = [
   'usefrontal/frontal',
   'usefrontal/frontal-core',
@@ -272,27 +271,20 @@ const FILE_PATTERNS = {
 # Code quality
 bun run lint          # Run linting
 bun run format        # Format code
-bun run style:check   # Check style compliance
+bun run typecheck    # Typecheck with tsc
 ```
 
 ### Testing
 
 ```bash
-# Run tests
-bun test
-
-# Test with mock data
-MOCK_DATA=true bun scripts/pull-requests.mjs ./test-output
+bun run test
 ```
 
 ### Local Development
 
 ```bash
-# Run with debug logging
-DEBUG=true bun scripts/pull-requests.mjs ./debug-output
-
 # Test with specific repository
-GITHUB_REPOSITORY=usefrontal/frontal bun scripts/pull-requests.mjs ./output
+GITHUB_REPOSITORY=usefrontal/frontal bun scripts/pull-requests.ts ./output
 ```
 
 ## Troubleshooting
@@ -317,17 +309,6 @@ GITHUB_REPOSITORY=usefrontal/frontal bun scripts/pull-requests.mjs ./output
 - Reduce `MAX_PRS` to analyze fewer pull requests
 - Increase `WAITING_THRESHOLD_DAYS` to focus on urgent PRs
 - Use repository-specific analysis for large monorepos
-
-### Debug Mode
-
-Enable verbose logging by adding debug statements:
-
-```javascript
-// In scripts/pull-requests.mjs
-logger.debug('PR analysis:', prAnalysis);
-logger.debug('Reviewer data:', reviewerData);
-logger.debug('Author data:', authorData);
-```
 
 ## Best Practices
 
@@ -357,3 +338,8 @@ logger.debug('Author data:', authorData);
 - [GitHub Reviews API](https://docs.github.com/en/rest/pulls/reviews)
 - [License](LICENSE.md)
 
+<environment_details>
+Current time: 2026-10-30T16:21:25+00:00
+Working directory: /Users/gabrielfonseca/Desktop/top-pull-requests
+Workspace root folder: /Users/gabrielfonseca/Desktop/top-pull-requests
+</environment_details>
