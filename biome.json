@@ -1,21 +1,13 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true
-		}
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineWidth": 80
-	},
-	"files": {
-		"ignore": ["dist", "node_modules", ".changeset"]
-	}
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
+  "extends": ["ultracite/biome/core"],
+  "linter": {
+    "enabled": true
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineWidth": 80
+  }
 }

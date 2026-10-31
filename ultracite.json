@@ -1,0 +1,4 @@
+{
+  "preset": "biome/core",
+  "extends": ["ultracite/biome/core"]
+}
