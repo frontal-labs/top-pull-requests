@@ -8,19 +8,19 @@ import type { AnalyzedPR } from "../src/types";
 
 describe("format", () => {
 	const mockPR = {
-		number: 123,
-		head: { ref: "feature/test" },
-		title: "Test PR",
-		user: { login: "testuser" },
-		assignees: [],
-		requested_reviewers: [],
-		waitTime: 3,
-		totalChanges: 600,
 		additions: 400,
-		deletions: 200,
+		assignees: [],
 		changed_files: 10,
-		totalComments: 6,
+		deletions: 200,
+		head: { ref: "feature/test" },
+		number: 123,
+		requested_reviewers: [],
 		reviewComments: [],
+		title: "Test PR",
+		totalChanges: 600,
+		totalComments: 6,
+		user: { login: "testuser" },
+		waitTime: 3,
 	} as unknown as AnalyzedPR;
 
 	it("formats PR correctly", () => {

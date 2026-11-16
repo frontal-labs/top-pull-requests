@@ -31,7 +31,7 @@ async function main() {
 			owner,
 			repo,
 			NUM_OF_DAYS,
-			MAX_PRS,
+			MAX_PRS
 		);
 
 		if (prs.length === 0) {
@@ -53,19 +53,19 @@ async function main() {
 		const recommendations = generateRecommendations(
 			analyzed,
 			waiting,
-			largeChanges,
+			largeChanges
 		);
 
 		console.log("Generating Slack payload...");
 		const payload = generateSlackPayload({
-			prs,
 			analyzed,
-			waiting,
-			largeChanges,
-			hotReviews,
-			reviewers,
 			authors,
+			hotReviews,
+			largeChanges,
+			prs,
 			recommendations,
+			reviewers,
+			waiting,
 		});
 
 		const payloadPath = join(outputDir, "slack-payload.json");

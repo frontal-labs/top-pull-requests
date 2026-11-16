@@ -76,41 +76,41 @@ export function generateSlackPayload(options: {
 		.join(", ");
 
 	const payload: SlackPayload = {
-		prelude: `Top Pull Requests Report (${today})\nThis report shows the most important pull requests that need attention.`,
-		prSummary: `Pull Request Summary\n• Total Open PRs: ${totalPRs}\n• Average Wait Time: ${avgWaitTime} days\n• Average Review Time: ${avgReviewTime} days${topLabels ? `\n• Top Labels: ${topLabels}` : ""}`,
-		waitingForReview:
-			waiting.length > 0
-				? `Waiting for Review (${waiting.length} PRs)\n${waiting.map((pr) => formatPR(pr)).join("\n")}`
-				: "Waiting for Review\n• No PRs waiting longer than the threshold",
-		largeChanges:
-			largeChanges.length > 0
-				? `Large Changes (${largeChanges.length} PRs)\n${largeChanges.map((pr) => formatLargeChangePR(pr)).join("\n")}`
-				: "Large Changes\n• No PRs exceed the large change threshold",
-		hotReviews:
-			hotReviews.length > 0
-				? `Hot Reviews (${hotReviews.length} PRs)\n${hotReviews.map((pr) => formatHotReviewPR(pr)).join("\n")}`
-				: "Hot Reviews\n• No PRs exceed the hot review threshold",
-		reviewerInsights:
-			reviewers.length > 0
-				? `Reviewer Insights\n${reviewers
-						.slice(0, TOP_REVIEWERS_COUNT)
-						.map(
-							(r) =>
-								`• @${r.login}: ${r.totalReviews} reviews (${r.approvalRate}% approval rate)\n  ${r.approvals} approved, ${r.changesRequested} changes requested`,
-						)
-						.join("\n")}`
-				: "Reviewer Insights\n• No review activity in the analyzed period",
 		authorInsights:
 			authors.length > 0
 				? `Author Insights\n${authors
 						.slice(0, TOP_AUTHORS_COUNT)
 						.map(
 							(a) =>
-								`• @${a.login}: ${a.openPRs} open PRs\n  ${a.totalChanges} lines changed (+${a.totalAdditions} -${a.totalDeletions})`,
+								`• @${a.login}: ${a.openPRs} open PRs\n  ${a.totalChanges} lines changed (+${a.totalAdditions} -${a.totalDeletions})`
 						)
 						.join("\n")}`
 				: "Author Insights\n• No author activity in the analyzed period",
+		hotReviews:
+			hotReviews.length > 0
+				? `Hot Reviews (${hotReviews.length} PRs)\n${hotReviews.map((pr) => formatHotReviewPR(pr)).join("\n")}`
+				: "Hot Reviews\n• No PRs exceed the hot review threshold",
+		largeChanges:
+			largeChanges.length > 0
+				? `Large Changes (${largeChanges.length} PRs)\n${largeChanges.map((pr) => formatLargeChangePR(pr)).join("\n")}`
+				: "Large Changes\n• No PRs exceed the large change threshold",
+		prelude: `Top Pull Requests Report (${today})\nThis report shows the most important pull requests that need attention.`,
+		prSummary: `Pull Request Summary\n• Total Open PRs: ${totalPRs}\n• Average Wait Time: ${avgWaitTime} days\n• Average Review Time: ${avgReviewTime} days${topLabels ? `\n• Top Labels: ${topLabels}` : ""}`,
 		recommendations: `Recommendations\n${recommendations.map((r) => `• ${r}`).join("\n")}`,
+		reviewerInsights:
+			reviewers.length > 0
+				? `Reviewer Insights\n${reviewers
+						.slice(0, TOP_REVIEWERS_COUNT)
+						.map(
+							(r) =>
+								`• @${r.login}: ${r.totalReviews} reviews (${r.approvalRate}% approval rate)\n  ${r.approvals} approved, ${r.changesRequested} changes requested`
+						)
+						.join("\n")}`
+				: "Reviewer Insights\n• No review activity in the analyzed period",
+		waitingForReview:
+			waiting.length > 0
+				? `Waiting for Review (${waiting.length} PRs)\n${waiting.map((pr) => formatPR(pr)).join("\n")}`
+				: "Waiting for Review\n• No PRs waiting longer than the threshold",
 	};
 
 	return payload;

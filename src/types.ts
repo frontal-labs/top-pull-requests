@@ -19,48 +19,48 @@ export type GitHubReviewComment = ListResponse<
 export type GitHubUser = NonNullable<PullRequest["user"]>;
 
 export interface AnalyzedPR extends PullRequest {
-	waitTime: number;
-	reviewTime: number | null;
-	totalComments: number;
-	totalChanges: number;
-	reviews: GitHubReview[];
-	comments: GitHubComment[];
-	reviewComments: GitHubReviewComment[];
 	additions: number;
-	deletions: number;
 	changed_files: number;
+	comments: GitHubComment[];
+	deletions: number;
+	reviewComments: GitHubReviewComment[];
+	reviews: GitHubReview[];
+	reviewTime: number | null;
+	totalChanges: number;
+	totalComments: number;
+	waitTime: number;
 }
 
 export interface ReviewerStats {
-	login: string;
-	totalReviews: number;
+	approvalRate: number;
 	approvals: number;
 	changesRequested: number;
 	comments: number;
-	approvalRate: number;
+	login: string;
+	totalReviews: number;
 }
 
 export interface AuthorStats {
 	login: string;
 	openPRs: number;
 	totalAdditions: number;
-	totalDeletions: number;
 	totalChanges: number;
+	totalDeletions: number;
 }
 
 export interface PRCategories {
-	waiting: AnalyzedPR[];
-	largeChanges: AnalyzedPR[];
 	hotReviews: AnalyzedPR[];
+	largeChanges: AnalyzedPR[];
+	waiting: AnalyzedPR[];
 }
 
 export interface SlackPayload {
+	authorInsights: string;
+	hotReviews: string;
+	largeChanges: string;
 	prelude: string;
 	prSummary: string;
-	waitingForReview: string;
-	largeChanges: string;
-	hotReviews: string;
-	reviewerInsights: string;
-	authorInsights: string;
 	recommendations: string;
+	reviewerInsights: string;
+	waitingForReview: string;
 }

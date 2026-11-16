@@ -2,8 +2,8 @@ import { MILLISECONDS_PER_DAY } from "./constants";
 
 export function formatDate(date: Date): string {
 	return new Date(date).toLocaleDateString("en-US", {
-		month: "numeric",
 		day: "numeric",
+		month: "numeric",
 		year: "numeric",
 	});
 }

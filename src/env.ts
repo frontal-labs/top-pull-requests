@@ -2,28 +2,28 @@ import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
 export const env = createEnv({
+	emptyStringAsUndefined: true,
+	runtimeEnv: process.env,
 	server: {
-		GH_TOKEN: z.string().optional(),
-		GITHUB_TOKEN: z.string().optional(),
 		GH_REPOSITORY: z
 			.string()
-			.regex(/^[^/]+\/[^/]+$/, "Repository must be in format owner/repo")
+			.regex(/^[^/]+\/[^/]+$/u, "Repository must be in format owner/repo")
 			.optional(),
+		GH_TOKEN: z.string().optional(),
 		GITHUB_REPOSITORY: z
 			.string()
-			.regex(/^[^/]+\/[^/]+$/, "Repository must be in format owner/repo")
+			.regex(/^[^/]+\/[^/]+$/u, "Repository must be in format owner/repo")
 			.optional(),
+		GITHUB_TOKEN: z.string().optional(),
 		OUTPUT_DIR: z.string().optional(),
 	},
-	runtimeEnv: process.env,
-	emptyStringAsUndefined: true,
 });
 
 export function getGitHubToken(): string {
 	const token = env.GH_TOKEN || env.GITHUB_TOKEN;
 	if (!token) {
 		console.error(
-			"Error: GH_TOKEN or GITHUB_TOKEN environment variable is required",
+			"Error: GH_TOKEN or GITHUB_TOKEN environment variable is required"
 		);
 		process.exit(1);
 	}

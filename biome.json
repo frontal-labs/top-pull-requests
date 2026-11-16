@@ -2,7 +2,15 @@
   "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
   "extends": ["ultracite/biome/core"],
   "linter": {
-    "enabled": true
+    "enabled": true,
+    "rules": {
+      "style": {
+        "useNamingConvention": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["Bun"]
   },
   "formatter": {
     "enabled": true,

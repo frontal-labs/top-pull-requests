@@ -21,19 +21,19 @@ export async function fetchPullRequests(
 	owner: string,
 	repo: string,
 	numOfDays: number,
-	maxPRs: number,
+	maxPRs: number
 ): Promise<PullRequest[]> {
 	const since = new Date();
 	since.setDate(since.getDate() - numOfDays);
 
 	try {
 		const { data: prs } = await octokit.rest.pulls.list({
-			owner,
-			repo,
-			state: "open",
-			sort: "updated",
 			direction: "desc",
+			owner,
 			per_page: maxPRs,
+			repo,
+			sort: "updated",
+			state: "open",
 		});
 
 		const recentPRs = prs.filter((pr: PullRequest) => {
@@ -54,7 +54,7 @@ export async function fetchPRDetails(
 	octokit: Octokit,
 	owner: string,
 	repo: string,
-	pr: PullRequest,
+	pr: PullRequest
 ): Promise<{
 	reviews: GitHubReview[];
 	comments: GitHubComment[];
@@ -64,40 +64,40 @@ export async function fetchPRDetails(
 		const [reviews, comments, reviewComments] = await Promise.all([
 			octokit.rest.pulls.listReviews({
 				owner,
-				repo,
 				pull_number: pr.number,
+				repo,
 			}),
 			octokit.rest.issues.listComments({
+				issue_number: pr.number,
 				owner,
 				repo,
-				issue_number: pr.number,
 			}),
 			octokit.rest.pulls.listReviewComments({
 				owner,
-				repo,
 				pull_number: pr.number,
+				repo,
 			}),
 		]);
 
 		return {
-			reviews: reviews.data,
 			comments: comments.data,
 			reviewComments: reviewComments.data,
+			reviews: reviews.data,
 		};
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
 		console.error(`Error fetching details for PR #${pr.number}:`, message);
 		return {
-			reviews: [],
 			comments: [],
 			reviewComments: [],
+			reviews: [],
 		};
 	}
 }
 
 export function calculateWaitTime(
 	pr: PullRequest,
-	reviews: GitHubReview[],
+	reviews: GitHubReview[]
 ): number {
 	if (reviews.length === 0) {
 		return daysSince(pr.created_at);
@@ -114,12 +114,12 @@ export function calculateWaitTime(
 
 export function calculateReviewTime(
 	pr: PullRequest,
-	reviews: GitHubReview[],
+	reviews: GitHubReview[]
 ): number | null {
-	const firstSubmittedAt = reviews
+	const [firstSubmittedAt] = reviews
 		.map((r) => (r.state === "PENDING" ? undefined : r.submitted_at))
 		.filter((submittedAt): submittedAt is string => Boolean(submittedAt))
-		.sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0];
+		.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
 	if (!firstSubmittedAt) {
 		return null;
@@ -132,40 +132,40 @@ export async function analyzePRs(
 	octokit: Octokit,
 	owner: string,
 	repo: string,
-	prs: PullRequest[],
+	prs: PullRequest[]
 ): Promise<AnalyzedPR[]> {
-	const analyzedPRs: AnalyzedPR[] = [];
+	const results = await Promise.all(
+		prs.map(async (pr) => {
+			const prDetails = await octokit.rest.pulls.get({
+				owner,
+				pull_number: pr.number,
+				repo,
+			});
+			const fullPR = prDetails.data;
+			const details = await fetchPRDetails(octokit, owner, repo, pr);
+			const waitTime = calculateWaitTime(pr, details.reviews);
+			const reviewTime = calculateReviewTime(pr, details.reviews);
+			const totalComments =
+				details.comments.length + details.reviewComments.length;
+			const totalChanges = (fullPR.additions || 0) + (fullPR.deletions || 0);
 
-	for (const pr of prs) {
-		const prDetails = await octokit.rest.pulls.get({
-			owner,
-			repo,
-			pull_number: pr.number,
-		});
-		const fullPR = prDetails.data;
-		const details = await fetchPRDetails(octokit, owner, repo, pr);
-		const waitTime = calculateWaitTime(pr, details.reviews);
-		const reviewTime = calculateReviewTime(pr, details.reviews);
-		const totalComments =
-			details.comments.length + details.reviewComments.length;
-		const totalChanges = (fullPR.additions || 0) + (fullPR.deletions || 0);
+			return {
+				...pr,
+				additions: fullPR.additions || 0,
+				changed_files: fullPR.changed_files || 0,
+				comments: details.comments,
+				deletions: fullPR.deletions || 0,
+				reviewComments: details.reviewComments,
+				reviews: details.reviews,
+				reviewTime,
+				totalChanges,
+				totalComments,
+				waitTime,
+			};
+		})
+	);
 
-		analyzedPRs.push({
-			...pr,
-			waitTime,
-			reviewTime,
-			totalComments,
-			totalChanges,
-			reviews: details.reviews,
-			comments: details.comments,
-			reviewComments: details.reviewComments,
-			additions: fullPR.additions || 0,
-			deletions: fullPR.deletions || 0,
-			changed_files: fullPR.changed_files || 0,
-		});
-	}
-
-	return analyzedPRs;
+	return results;
 }
 
 export function categorizePRs(prs: AnalyzedPR[]): PRCategories {
@@ -191,14 +191,14 @@ export function categorizePRs(prs: AnalyzedPR[]): PRCategories {
 	largeChanges.sort((a, b) => b.totalChanges - a.totalChanges);
 	hotReviews.sort((a, b) => b.totalComments - a.totalComments);
 
-	return { waiting, largeChanges, hotReviews };
+	return { hotReviews, largeChanges, waiting };
 }
 
 interface ReviewerMapEntry {
-	reviews: GitHubReview[];
 	approvals: number;
 	changesRequested: number;
 	comments: number;
+	reviews: GitHubReview[];
 }
 
 export function analyzeReviewers(prs: AnalyzedPR[]): ReviewerStats[] {
@@ -213,7 +213,7 @@ export function analyzeReviewers(prs: AnalyzedPR[]): ReviewerStats[] {
 			const reviewer = review.user.login;
 			let stats = reviewerMap.get(reviewer);
 			if (!stats) {
-				stats = { reviews: [], approvals: 0, changesRequested: 0, comments: 0 };
+				stats = { approvals: 0, changesRequested: 0, comments: 0, reviews: [] };
 				reviewerMap.set(reviewer, stats);
 			}
 			stats.reviews.push(review);
@@ -234,12 +234,12 @@ export function analyzeReviewers(prs: AnalyzedPR[]): ReviewerStats[] {
 			total > 0 ? Math.round((stats.approvals / total) * 100) : 0;
 
 		return {
-			login,
-			totalReviews: total,
+			approvalRate,
 			approvals: stats.approvals,
 			changesRequested: stats.changesRequested,
 			comments: stats.comments,
-			approvalRate,
+			login,
+			totalReviews: total,
 		};
 	});
 
@@ -257,7 +257,9 @@ export function analyzeAuthors(prs: AnalyzedPR[]): AuthorStats[] {
 
 	for (const pr of prs) {
 		const author = pr.user?.login;
-		if (!author) continue;
+		if (!author) {
+			continue;
+		}
 		let stats = authorMap.get(author);
 		if (!stats) {
 			stats = { prs: [], totalAdditions: 0, totalDeletions: 0 };
@@ -272,8 +274,8 @@ export function analyzeAuthors(prs: AnalyzedPR[]): AuthorStats[] {
 		login,
 		openPRs: stats.prs.length,
 		totalAdditions: stats.totalAdditions,
-		totalDeletions: stats.totalDeletions,
 		totalChanges: stats.totalAdditions + stats.totalDeletions,
+		totalDeletions: stats.totalDeletions,
 	}));
 
 	return authors.sort((a, b) => b.openPRs - a.openPRs);
@@ -282,37 +284,37 @@ export function analyzeAuthors(prs: AnalyzedPR[]): AuthorStats[] {
 export function generateRecommendations(
 	prs: AnalyzedPR[],
 	waiting: AnalyzedPR[],
-	largeChanges: AnalyzedPR[],
+	largeChanges: AnalyzedPR[]
 ): string[] {
 	const recommendations: string[] = [];
 
 	if (waiting.length > 0) {
 		recommendations.push(
-			`Review PRs waiting more than ${WAITING_THRESHOLD_DAYS} days (${waiting.length} PRs)`,
+			`Review PRs waiting more than ${WAITING_THRESHOLD_DAYS} days (${waiting.length} PRs)`
 		);
 	}
 
 	const unassignedPRs = prs.filter(
-		(pr) => !pr.assignees || pr.assignees.length === 0,
+		(pr) => !pr.assignees || pr.assignees.length === 0
 	);
 	if (unassignedPRs.length > 0) {
 		recommendations.push(
-			`Assign reviewers to unassigned PRs (${unassignedPRs.length} PRs)`,
+			`Assign reviewers to unassigned PRs (${unassignedPRs.length} PRs)`
 		);
 	}
 
 	if (largeChanges.length > 0) {
 		recommendations.push(
-			`Break down large PRs into smaller, focused changes (${largeChanges.length} PRs)`,
+			`Break down large PRs into smaller, focused changes (${largeChanges.length} PRs)`
 		);
 	}
 
 	const prsWithoutLabels = prs.filter(
-		(pr) => !pr.labels || pr.labels.length === 0,
+		(pr) => !pr.labels || pr.labels.length === 0
 	);
 	if (prsWithoutLabels.length > 0) {
 		recommendations.push(
-			`Add labels to PRs for better categorization (${prsWithoutLabels.length} PRs)`,
+			`Add labels to PRs for better categorization (${prsWithoutLabels.length} PRs)`
 		);
 	}
 

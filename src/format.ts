@@ -77,7 +77,7 @@ export function formatHotReviewPR(pr: AnalyzedPR): string {
 	}
 
 	lines.push(
-		`  ${pr.totalComments} comments, ${pr.reviewComments.length} review comments`,
+		`  ${pr.totalComments} comments, ${pr.reviewComments.length} review comments`
 	);
 
 	return lines.join("\n");
