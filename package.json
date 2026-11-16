@@ -1,6 +1,6 @@
 {
   "name": "@frontal/top-pull-requests",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Frontal tool that surfaces the most important pull requests by analyzing waiting times, change sizes, review activity, and reviewer assignments",
   "keywords": [
